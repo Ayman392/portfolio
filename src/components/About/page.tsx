@@ -21,9 +21,9 @@ import {
 } from "lucide-react";
 import { stagger, viewport } from "@/lib/motion";
 
-// Put your picture in public/Assets and set the path here, for example "/Assets/me.jpg"
-// Leave it as "" to show your initials instead
-const photo = "";
+// The picture lives in public/Assets
+// Set this to "" to show your initials instead
+const photo = "/Assets/portfolio_pic.jpeg";
 
 // Change these to your own stack
 const stack = [
@@ -152,7 +152,7 @@ export default function About() {
                   alt="Ayman Nasir Uddin"
                   width={112}
                   height={112}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover object-top"
                 />
               ) : (
                 "AN"
@@ -221,7 +221,9 @@ export default function About() {
 
         {/* Location */}
         <Widget icon={<MapPin size={14} />} label="Location">
-          <p className="text-xl font-semibold tracking-tight text-white">Dhaka</p>
+          <p className="text-xl font-semibold tracking-tight text-white">
+            Dhaka
+          </p>
           <p className="mt-1 text-sm text-white/60">Bangladesh</p>
         </Widget>
 
