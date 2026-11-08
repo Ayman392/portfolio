@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AlignLeft, FileText, Menu } from "lucide-react";
 import { motion } from "framer-motion";
 import {
@@ -10,12 +12,12 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 
-// Change these to match your own sections
+// Start with "/" so the links also work from the project detail pages
 const links = [
-  { name: "About", href: "#about" },
-  { name: "Projects", href: "#projects" },
-  { name: "Skills", href: "#skills" },
-  { name: "Contact", href: "#contact" },
+  { name: "About", href: "/#about" },
+  { name: "Projects", href: "/#projects" },
+  { name: "Skills", href: "/#skills" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 // The iOS-style blue Resume button
@@ -48,6 +50,35 @@ export default function Navbar() {
   // Which link the mouse is on (null when it is on none)
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
+  const pathname = usePathname();
+
+  // On the home page, jump to the top instead of doing nothing
+  function handleLogoClick(event: React.MouseEvent<HTMLAnchorElement>) {
+    if (pathname !== "/") return; // on other pages the link goes home as normal
+
+    event.preventDefault();
+
+    const startY = window.scrollY;
+    if (startY === 0) return;
+
+    const duration = 700; // milliseconds
+    const startTime = performance.now();
+
+    // Starts fast, then eases to a stop
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+    function step(now: number) {
+      const progress = Math.min((now - startTime) / duration, 1);
+      window.scrollTo({
+        top: startY * (1 - easeOutCubic(progress)),
+        behavior: "instant",
+      });
+      if (progress < 1) requestAnimationFrame(step);
+    }
+
+    requestAnimationFrame(step);
+  }
+
   // Open the resume PDF in a new tab
   function openResume() {
     window.open("/Assets/Ayman_Nasir_Uddin_Resume.pdf", "_blank");
@@ -65,8 +96,12 @@ export default function Navbar() {
       {/* Full width on mobile, exactly 704px on desktop */}
       <div className="w-[calc(100vw-2rem)] rounded-[24px] border border-white/20 bg-black/30 shadow-[0_8px_32px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-[28px] backdrop-saturate-150 md:w-[704px]">
         <header className="flex h-[50px] items-center justify-between pr-[9px] pl-[10px]">
-          {/* Logo */}
-          <a href="#home" className="flex items-center gap-2.5">
+          {/* Logo: goes to the top of the home page from anywhere */}
+          <Link
+            href="/"
+            onClick={handleLogoClick}
+            className="flex items-center gap-2.5"
+          >
             {/* Tile with a thin blue-to-orange edge */}
             <div className="rounded-lg bg-gradient-to-br from-blue-500 via-neutral-700 to-orange-500 p-px">
               <div className="flex h-[28px] w-[28px] items-center justify-center rounded-[7px] bg-neutral-950">
@@ -76,7 +111,7 @@ export default function Navbar() {
             <span className="text-[15px] font-semibold tracking-tight text-white">
               Ayman Nasir Uddin
             </span>
-          </a>
+          </Link>
 
           {/* Links (hidden on mobile) */}
           <ul
@@ -97,12 +132,12 @@ export default function Navbar() {
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
-                <a
+                <Link
                   href={link.href}
                   className="relative block px-3 py-1.5 text-sm font-medium tracking-tight text-white/55 transition hover:text-white"
                 >
                   {link.name}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -136,13 +171,13 @@ export default function Navbar() {
             <ul className="flex flex-col gap-6 px-4">
               {links.map((link) => (
                 <li key={link.name}>
-                  <a
+                  <Link
                     href={link.href}
                     className="text-2xl font-medium"
                     onClick={() => setMenuOpen(false)}
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
