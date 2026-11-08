@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import AnimatedBackground from "@/components/ui/animated-background";
 import ScrollProgress from "@/components/ui/scroll-progress";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
 import Navbar from "@/components/Navbar/page";
@@ -29,11 +30,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body
         className={`${inter.className} min-h-full flex flex-col tracking-tight`}
       >
-        <SmoothScroll>
-          <ScrollProgress />
-          <Navbar />
-          {children}
-        </SmoothScroll>
+        {/* The moving colours sit behind everything */}
+        <AnimatedBackground />
+
+        {/* All the page content sits above the background */}
+        <div className="relative z-10 flex flex-1 flex-col">
+          <SmoothScroll>
+            <ScrollProgress />
+            <Navbar />
+            {children}
+          </SmoothScroll>
+        </div>
       </body>
     </html>
   );

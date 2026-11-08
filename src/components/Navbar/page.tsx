@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { AlignLeft, FileText, Menu } from "lucide-react";
-import BreezyButton from "../ui/breezy-button/breezy-button";
 import { motion } from "framer-motion";
 import {
   Sheet,
@@ -18,6 +17,30 @@ const links = [
   { name: "Skills", href: "#skills" },
   { name: "Contact", href: "#contact" },
 ];
+
+// The iOS-style blue Resume button
+// "className" sets the size, so the same button works in the bar and in the menu
+function ResumeButton({
+  onClick,
+  className = "",
+}: {
+  onClick: () => void;
+  className?: string;
+}) {
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.94 }}
+      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+      className={`flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-sky-400 to-blue-600 font-semibold text-white shadow-md shadow-blue-600/30 ${className}`}
+    >
+      <FileText size={14} />
+      Resume
+    </motion.button>
+  );
+}
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -87,12 +110,10 @@ export default function Navbar() {
           {/* Button + mobile menu button */}
           <div className="flex items-center gap-2">
             <div className="hidden md:block">
-              <BreezyButton onClick={openResume}>
-                <span className="flex items-center gap-2">
-                  <FileText size={14} />
-                  Resume
-                </span>
-              </BreezyButton>
+              <ResumeButton
+                onClick={openResume}
+                className="h-[34px] px-4 text-[13px]"
+              />
             </div>
 
             <button
@@ -125,14 +146,13 @@ export default function Navbar() {
                 </li>
               ))}
             </ul>
+
             {/* Button pushed to the bottom of the drawer */}
             <div className="mt-auto px-4 pb-6">
-              <BreezyButton onClick={openResume}>
-                <span className="flex items-center justify-center gap-2">
-                  <FileText size={14} />
-                  Resume
-                </span>
-              </BreezyButton>
+              <ResumeButton
+                onClick={openResume}
+                className="h-11 w-full text-sm"
+              />
             </div>
           </SheetContent>
         </Sheet>

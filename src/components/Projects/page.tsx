@@ -1,15 +1,11 @@
 "use client";
 
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { fadeUp, stagger, viewport } from "@/lib/motion";
 import Image from "next/image";
 
+// Add or edit your projects here
 // Add or edit your projects here
 const projects = [
   {
@@ -35,24 +31,31 @@ const projects = [
   {
     name: "Bazar Dor",
     description:
-      "A Bengali market-price application for exploring daily prices, comparing markets, and tracking price changes.",
-    tech: [], // add your tech here, for example ["Next.js", "TypeScript"]
+      "A Bengali market-price app for exploring daily prices of essential products in Bangladesh. Browse by category, see the biggest price rises and falls, compare prices across markets, and sign in with email, Google or GitHub.",
+    tech: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "HeroUI",
+      "Better Auth",
+      "MongoDB",
+    ],
     github: "https://github.com/Ayman392/Bazar-Dor",
-    live: "", // add a live link here if you have one
+    live: "https://bazar-dor-self.vercel.app",
     image: "/Assets/bazar-dor.png",
     gradient: "from-emerald-500 to-teal-600",
   },
   {
     name: "Fitlog",
     description: "A workout tracking app.",
-    tech: [], // add your tech here
+    tech: ["Next.js", "TypeScript"], // add more here when you know the full stack
     github: "https://github.com/Ayman392/Fitlog",
-    live: "", // add a live link here if you have one
+    live: "https://fitlog-eosin-kappa.vercel.app",
     image: "/Assets/fitlog.png",
     gradient: "from-orange-500 to-rose-600",
   },
 ];
-
 // Wraps a card so it tilts in 3D toward the mouse
 function TiltCard({ children }: { children: React.ReactNode }) {
   // Where the mouse is inside the card: -0.5 (left/top) to 0.5 (right/bottom)
@@ -157,7 +160,11 @@ export default function Projects() {
                       rel="noreferrer"
                       whileHover={{ scale: 1.08 }}
                       whileTap={{ scale: 0.94 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 17,
+                      }}
                       className="shrink-0 rounded-full bg-white/10 px-5 py-1.5 text-sm font-semibold text-sky-400 hover:bg-white/20"
                     >
                       View

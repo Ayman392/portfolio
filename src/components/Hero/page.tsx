@@ -5,7 +5,14 @@ import { Button as HeroButton } from "@heroui/react";
 import { Button } from "@/components/ui/button";
 
 // Change these to your own skills
-const tech = ["Next.js", "React", "TypeScript", "Tailwind CSS", "Node.js", "MongoDB"];
+const tech = [
+  "Next.js",
+  "React",
+  "TypeScript",
+  "Tailwind CSS",
+  "Node.js",
+  "MongoDB",
+];
 
 const name = "Ayman Nasir Uddin";
 
@@ -50,8 +57,6 @@ export default function Hero() {
             transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
           />
         </motion.div>
-        {/* Fade into the page at the bottom */}
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent" />
       </div>
 
       {/* Everything above the glow */}
