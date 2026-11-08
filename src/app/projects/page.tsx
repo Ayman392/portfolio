@@ -1,15 +1,16 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { fadeUp, stagger, viewport } from "@/lib/motion";
 import Image from "next/image";
+import Link from "next/link";
 
-// Add or edit your projects here
 // Add or edit your projects here
 const projects = [
   {
     name: "Oikyo",
+    slug: "oikyo",
     description:
       "A community platform where people create, discover and join social service events across Bangladesh, with an event map, calendar and list views, and an owner-only dashboard.",
     tech: [
@@ -30,6 +31,7 @@ const projects = [
   },
   {
     name: "Bazar Dor",
+    slug: "bazar-dor",
     description:
       "A Bengali market-price app for exploring daily prices of essential products in Bangladesh. Browse by category, see the biggest price rises and falls, compare prices across markets, and sign in with email, Google or GitHub.",
     tech: [
@@ -48,6 +50,7 @@ const projects = [
   },
   {
     name: "Fitlog",
+    slug: "fitlog",
     description: "A workout tracking app.",
     tech: ["Next.js", "TypeScript"], // add more here when you know the full stack
     github: "https://github.com/Ayman392/Fitlog",
@@ -56,6 +59,7 @@ const projects = [
     gradient: "from-orange-500 to-rose-600",
   },
 ];
+
 // Wraps a card so it tilts in 3D toward the mouse
 function TiltCard({ children }: { children: React.ReactNode }) {
   // Where the mouse is inside the card: -0.5 (left/top) to 0.5 (right/bottom)
@@ -143,33 +147,12 @@ export default function Projects() {
                 </div>
 
                 <div className="p-6">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="text-xl font-semibold tracking-tight text-white">
-                        {project.name}
-                      </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-white/60">
-                        {project.description}
-                      </p>
-                    </div>
-
-                    {/* Like the App Store "GET" button, with a springy press */}
-                    <motion.a
-                      href={project.live || project.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      whileHover={{ scale: 1.08 }}
-                      whileTap={{ scale: 0.94 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 17,
-                      }}
-                      className="shrink-0 rounded-full bg-white/10 px-5 py-1.5 text-sm font-semibold text-sky-400 hover:bg-white/20"
-                    >
-                      View
-                    </motion.a>
-                  </div>
+                  <h3 className="text-xl font-semibold tracking-tight text-white">
+                    {project.name}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-white/60">
+                    {project.description}
+                  </p>
 
                   {/* Tech tags (hidden when the list is empty) */}
                   {project.tech.length > 0 && (
@@ -185,17 +168,26 @@ export default function Projects() {
                     </div>
                   )}
 
-                  {/* Source link, only when the View button goes to a live site */}
-                  {project.live && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-5 inline-flex items-center gap-1 text-sm text-white/50 transition hover:text-white"
+                  {/* Card links */}
+                  <div className="mt-5 flex flex-wrap items-center gap-5">
+                    <Link
+                      href={`/projects/${project.slug}`}
+                      className="inline-flex items-center gap-1 text-sm text-white/50 transition hover:text-white"
                     >
-                      Source code <ArrowUpRight size={14} />
-                    </a>
-                  )}
+                      View Details <ArrowRight size={14} />
+                    </Link>
+
+                    {project.live && (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 text-sm text-white/50 transition hover:text-white"
+                      >
+                        Source code <ArrowUpRight size={14} />
+                      </a>
+                    )}
+                  </div>
                 </div>
               </article>
             </TiltCard>

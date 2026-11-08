@@ -5,6 +5,7 @@ import AnimatedBackground from "@/components/ui/animated-background";
 import ScrollProgress from "@/components/ui/scroll-progress";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
 import Navbar from "@/components/Navbar/page";
+import Footer from "@/components/Footer/page";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <ScrollProgress />
             <Navbar />
             {children}
+            <Footer />
           </SmoothScroll>
         </div>
       </body>
