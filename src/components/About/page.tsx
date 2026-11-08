@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import {
   animate,
   motion,
@@ -20,10 +19,6 @@ import {
   Target,
 } from "lucide-react";
 import { stagger, viewport } from "@/lib/motion";
-
-// The picture lives in public/Assets
-// Set this to "" to show your initials instead
-const photo = "/Assets/portfolio_pic.jpeg";
 
 // Change these to your own stack
 const stack = [
@@ -122,7 +117,7 @@ export default function About() {
         viewport={viewport}
         className="mt-12 grid gap-4 md:grid-cols-4"
       >
-        {/* Profile card (big) */}
+        {/* Profile card (big), text only because the photo is in the hero */}
         <motion.div
           variants={popIn}
           className="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-8 backdrop-blur-xl md:col-span-2 md:row-span-2"
@@ -139,43 +134,28 @@ export default function About() {
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
           />
 
-          <div className="relative">
-            {/* Photo, or initials if there is no photo. It tilts on hover */}
-            <motion.div
-              whileHover={{ rotate: -6, scale: 1.06 }}
-              transition={{ type: "spring", stiffness: 300, damping: 15 }}
-              className="flex h-48 w-48 items-center justify-center overflow-hidden rounded-[48px] bg-gradient-to-br from-sky-500 to-indigo-600 text-6xl font-bold text-white ring-1 ring-white/20"
-            >
-              {photo ? (
-                <Image
-                  src={photo}
-                  alt="Ayman Nasir Uddin"
-                  width={192}
-                  height={192}
-                  className="h-full w-full object-cover object-top"
-                />
-              ) : (
-                "AN"
-              )}
-            </motion.div>
+          <div className="relative flex h-full flex-col justify-between gap-8">
+            <div>
+              <p className="inline-block rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-white/70">
+                Full-Stack Developer
+              </p>
 
-            <h3 className="mt-6 text-3xl font-semibold tracking-tight text-white">
-              Ayman Nasir Uddin
-            </h3>
-            <p className="mt-2 inline-block rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-white/70">
-              Full-Stack Developer
-            </p>
+              <h3 className="mt-5 bg-gradient-to-b from-white to-white/60 bg-clip-text pb-1 text-4xl font-semibold tracking-tight text-transparent md:text-5xl">
+                Ayman Nasir Uddin
+              </h3>
 
-            {/* Bio: change this to your own words */}
-            <p className="mt-5 leading-relaxed text-white/60">
-              I&apos;m a software engineering student at Daffodil International
-              University who loves building websites with clean, beautiful
-              interfaces. I work mostly with React, Next.js, TypeScript and
-              Tailwind CSS, and I&apos;m growing into a full-stack developer who
-              can build complex web apps from the database to the interface.
-            </p>
+              {/* Bio: change this to your own words */}
+              <p className="mt-5 leading-relaxed text-white/60">
+                I&apos;m a software engineering student at Daffodil
+                International University who loves building websites with clean,
+                beautiful interfaces. I work mostly with React, Next.js,
+                TypeScript and Tailwind CSS, and I&apos;m growing into a
+                full-stack developer who can build complex web apps from the
+                database to the interface.
+              </p>
+            </div>
 
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3">
               <motion.a
                 href="https://github.com/Ayman392"
                 target="_blank"

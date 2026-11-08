@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AlignLeft, FileText, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
 import {
   Sheet,
@@ -19,30 +19,6 @@ const links = [
   { name: "Skills", href: "/#skills" },
   { name: "Contact", href: "/#contact" },
 ];
-
-// The iOS-style blue Resume button
-// "className" sets the size, so the same button works in the bar and in the menu
-function ResumeButton({
-  onClick,
-  className = "",
-}: {
-  onClick: () => void;
-  className?: string;
-}) {
-  return (
-    <motion.button
-      type="button"
-      onClick={onClick}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.94 }}
-      transition={{ type: "spring", stiffness: 400, damping: 17 }}
-      className={`flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-sky-400 to-blue-600 font-semibold text-white shadow-md shadow-blue-600/30 ${className}`}
-    >
-      <FileText size={14} />
-      Resume
-    </motion.button>
-  );
-}
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -79,12 +55,6 @@ export default function Navbar() {
     requestAnimationFrame(step);
   }
 
-  // Open the resume PDF in a new tab
-  function openResume() {
-    window.open("/Assets/Ayman_Nasir_Uddin_Resume.pdf", "_blank");
-    setMenuOpen(false);
-  }
-
   return (
     <motion.nav
       className="fixed top-5 left-1/2 z-50 -translate-x-1/2"
@@ -103,11 +73,7 @@ export default function Navbar() {
             className="flex items-center gap-2.5"
           >
             {/* Tile with a thin blue-to-orange edge */}
-            <div className="rounded-lg bg-gradient-to-br from-blue-500 via-neutral-700 to-orange-500 p-px">
-              <div className="flex h-[28px] w-[28px] items-center justify-center rounded-[7px] bg-neutral-950">
-                <AlignLeft size={16} strokeWidth={2.5} className="text-white" />
-              </div>
-            </div>
+            <div className="rounded-lg bg-gradient-to-br from-blue-500 via-neutral-700 to-orange-500 p-px"></div>
             <span className="text-[15px] font-semibold tracking-tight text-white">
               Ayman Nasir Uddin
             </span>
@@ -144,13 +110,6 @@ export default function Navbar() {
 
           {/* Button + mobile menu button */}
           <div className="flex items-center gap-2">
-            <div className="hidden md:block">
-              <ResumeButton
-                onClick={openResume}
-                className="h-[34px] px-4 text-[13px]"
-              />
-            </div>
-
             <button
               className="rounded-lg p-2 text-white/80 md:hidden"
               aria-label="Open menu"
@@ -181,14 +140,6 @@ export default function Navbar() {
                 </li>
               ))}
             </ul>
-
-            {/* Button pushed to the bottom of the drawer */}
-            <div className="mt-auto px-4 pb-6">
-              <ResumeButton
-                onClick={openResume}
-                className="h-11 w-full text-sm"
-              />
-            </div>
           </SheetContent>
         </Sheet>
       </div>
