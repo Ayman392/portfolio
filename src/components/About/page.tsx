@@ -144,14 +144,14 @@ export default function About() {
             <motion.div
               whileHover={{ rotate: -6, scale: 1.06 }}
               transition={{ type: "spring", stiffness: 300, damping: 15 }}
-              className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-[32px] bg-gradient-to-br from-sky-500 to-indigo-600 text-4xl font-bold text-white ring-1 ring-white/20"
+              className="flex h-48 w-48 items-center justify-center overflow-hidden rounded-[48px] bg-gradient-to-br from-sky-500 to-indigo-600 text-6xl font-bold text-white ring-1 ring-white/20"
             >
               {photo ? (
                 <Image
                   src={photo}
                   alt="Ayman Nasir Uddin"
-                  width={112}
-                  height={112}
+                  width={192}
+                  height={192}
                   className="h-full w-full object-cover object-top"
                 />
               ) : (
