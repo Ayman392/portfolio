@@ -3,14 +3,18 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
+import { FileText, Menu } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+
+const resumeFile = "/Assets/Ayman_Nasir_Uddin_Resume.pdf";
 
 // Start with "/" so the links also work from the project detail pages
 const links = [
@@ -65,23 +69,35 @@ export default function Navbar() {
     >
       {/* Full width on mobile, exactly 704px on desktop */}
       <div className="w-[calc(100vw-2rem)] rounded-[24px] border border-white/20 bg-black/30 shadow-[0_8px_32px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-[28px] backdrop-saturate-150 md:w-[704px]">
-        <header className="flex h-[50px] items-center justify-between pr-[9px] pl-[10px]">
+        {/* Mobile: logo left, buttons right. Desktop: logo | links centered | resume */}
+        <header className="flex h-[50px] items-center justify-between pr-[9px] pl-[10px] md:grid md:grid-cols-[1fr_auto_1fr]">
           {/* Logo: goes to the top of the home page from anywhere */}
           <Link
             href="/"
             onClick={handleLogoClick}
-            className="flex items-center gap-2.5"
+            className="flex items-center gap-2.5 justify-self-start"
           >
             {/* Tile with a thin blue-to-orange edge */}
-            <div className="rounded-lg bg-gradient-to-br from-blue-500 via-neutral-700 to-orange-500 p-px"></div>
-            <span className="text-[15px] font-semibold tracking-tight text-white">
+            <div className="rounded-lg bg-gradient-to-br from-blue-500 via-neutral-700 to-orange-500 p-px">
+              <div className="relative h-[30px] w-[30px] overflow-hidden rounded-[7px] bg-neutral-950">
+                <Image
+                  src="/Assets/nav-logo.jpg"
+                  alt="Ayman Nasir Uddin logo"
+                  fill
+                  sizes="30px"
+                  priority
+                  className="object-cover"
+                />
+              </div>
+            </div>
+            <span className="whitespace-nowrap text-[15px] font-semibold tracking-tight text-white">
               Ayman Nasir Uddin
             </span>
           </Link>
 
           {/* Links (hidden on mobile) */}
           <ul
-            className="hidden items-center gap-1 md:flex"
+            className="hidden items-center justify-self-center gap-1 md:flex"
             onMouseLeave={() => setHoveredLink(null)}
           >
             {links.map((link) => (
@@ -108,8 +124,20 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* Button + mobile menu button */}
-          <div className="flex items-center gap-2">
+          {/* Resume button + mobile menu button */}
+          <div className="flex items-center gap-2 justify-self-end">
+            {/* Opens the PDF in a new tab */}
+            <Button
+              type="button"
+              onClick={() =>
+                window.open(resumeFile, "_blank", "noopener,noreferrer")
+              }
+              className="h-8 gap-1.5 rounded-full border border-sky-300/40 bg-sky-500/40 px-3.5 text-[13px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_4px_12px_rgba(10,132,255,0.35)] backdrop-blur-xl hover:bg-sky-500/55"
+            >
+              <FileText size={14} />
+              Resume
+            </Button>
+
             <button
               className="rounded-lg p-2 text-white/80 md:hidden"
               aria-label="Open menu"

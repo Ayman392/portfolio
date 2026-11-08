@@ -75,7 +75,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="relative z-10 mx-auto max-w-5xl px-6 pb-10 pt-4">
+    <footer className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-10 pt-4">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
