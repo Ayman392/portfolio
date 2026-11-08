@@ -6,6 +6,7 @@ import ScrollProgress from "@/components/ui/scroll-progress";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
 import Navbar from "@/components/Navbar/page";
 import Footer from "@/components/Footer/page";
+import PageEffects from "@/components/ui/page-effects";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -33,7 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       >
         {/* The moving colours sit behind everything */}
         <AnimatedBackground />
-
+        <PageEffects />
         {/* All the page content sits above the background */}
         <div className="relative z-10 flex flex-1 flex-col">
           <SmoothScroll>

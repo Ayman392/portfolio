@@ -2,14 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-  type MotionValue,
-} from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ChevronUp,
   Command,
@@ -89,89 +82,6 @@ const stackItem = {
   },
 };
 
-// Fixed particle layout (no Math.random, so the server and browser always match)
-const particles = Array.from({ length: 22 }, (_, i) => ({
-  left: (i * 37 + 11) % 100,
-  top: (i * 53 + 17) % 100,
-  size: 2 + (i % 3),
-  rise: 80 + (i % 4) * 40,
-  duration: 7 + (i % 5) * 1.6,
-  delay: (i % 7) * 0.7,
-  color: ["bg-sky-300", "bg-orange-300", "bg-white", "bg-fuchsia-300"][i % 4],
-}));
-
-// Animated hero background: drifting grid, rising particles, and a glow that follows the mouse.
-// The site's colour ribbons (in layout.tsx) show through behind it.
-function HeroBackground({
-  mouseX,
-  mouseY,
-}: {
-  mouseX: MotionValue<number>;
-  mouseY: MotionValue<number>;
-}) {
-  const reduceMotion = useReducedMotion();
-
-  // Springs make the glow trail the cursor smoothly
-  const glowX = useSpring(mouseX, { stiffness: 80, damping: 20 });
-  const glowY = useSpring(mouseY, { stiffness: 80, damping: 20 });
-
-  const gridMask =
-    "radial-gradient(ellipse at center, black 25%, transparent 72%)";
-
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
-    >
-      {/* Grid that slowly drifts, faded out toward the edges */}
-      <motion.div
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(255,255,255,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.07) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-          maskImage: gridMask,
-          WebkitMaskImage: gridMask,
-        }}
-        animate={
-          reduceMotion
-            ? undefined
-            : { backgroundPosition: ["0px 0px", "56px 56px"] }
-        }
-        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-      />
-
-      {/* Glow that follows the mouse */}
-      <motion.div
-        className="absolute left-0 top-0 -ml-[260px] -mt-[260px] h-[520px] w-[520px] rounded-full bg-sky-500/25 blur-[110px]"
-        style={{ x: glowX, y: glowY }}
-      />
-
-      {/* Particles floating up and fading out */}
-      {!reduceMotion &&
-        particles.map((p, i) => (
-          <motion.span
-            key={i}
-            className={`absolute rounded-full ${p.color}`}
-            style={{
-              left: `${p.left}%`,
-              top: `${p.top}%`,
-              width: p.size,
-              height: p.size,
-            }}
-            animate={{ y: [0, -p.rise], opacity: [0, 0.7, 0] }}
-            transition={{
-              duration: p.duration,
-              delay: p.delay,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
-    </div>
-  );
-}
-
 // Dock icon with a label that appears on hover
 function DockItem({
   label,
@@ -229,10 +139,6 @@ export default function Hero() {
   const [query, setQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
 
-  // Mouse position inside the hero, used by the background glow
-  const mouseX = useMotionValue(400);
-  const mouseY = useMotionValue(300);
-
   // Clock for the Dynamic Island
   useEffect(() => {
     const updateTime = () =>
@@ -254,39 +160,36 @@ export default function Hero() {
     };
   }, []);
 
-  // Spotlight typing effect, then the results appear
+  // Spotlight typing effect, then the results fade in
   useEffect(() => {
     const text = `${name}?`;
     let index = 0;
-    let revealTimer: ReturnType<typeof setTimeout> | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined;
 
-    const typing = setInterval(() => {
+    function typeNext() {
       index++;
       setQuery(text.slice(0, index));
-      if (index >= text.length) {
-        clearInterval(typing);
-        revealTimer = setTimeout(() => setShowResults(true), 400);
-      }
-    }, 60);
 
-    return () => {
-      clearInterval(typing);
-      if (revealTimer) clearTimeout(revealTimer);
-    };
+      if (index < text.length) {
+        // 55 to 127 ms per letter, a slightly uneven rhythm like real typing
+        timer = setTimeout(typeNext, 55 + ((index * 37) % 5) * 18);
+      } else {
+        // Short pause after the last letter, then show the results
+        timer = setTimeout(() => setShowResults(true), 500);
+      }
+    }
+
+    // Wait for the search bar to finish appearing before typing starts
+    timer = setTimeout(typeNext, 700);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <section
       id="home"
-      onPointerMove={(event) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        mouseX.set(event.clientX - rect.left);
-        mouseY.set(event.clientY - rect.top);
-      }}
       className="relative flex min-h-screen flex-col items-center justify-between gap-10 overflow-hidden px-4 pb-8 pt-28 selection:bg-blue-500/30"
     >
-      <HeroBackground mouseX={mouseX} mouseY={mouseY} />
-
       {/* TOP: Dynamic Island. Hover or tap to expand */}
       <div className="relative z-10 flex w-full justify-center">
         <motion.div
@@ -364,7 +267,7 @@ export default function Hero() {
       </div>
 
       {/* CENTER: Spotlight search with the results window */}
-      <div className="relative z-10 w-full max-w-2xl">
+      <div className="relative z-10 w-full max-w-2xl sm:min-h-[480px]">
         <motion.div
           initial={{ opacity: 0, y: -20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -390,9 +293,10 @@ export default function Hero() {
         <AnimatePresence>
           {showResults && (
             <motion.div
-              initial={{ opacity: 0, y: -10, filter: "blur(10px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              initial={{ opacity: 0, y: 14, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              style={{ transformOrigin: "top" }}
               className="mt-3 overflow-hidden rounded-2xl border border-white/10 bg-[#1c1c1e]/60 shadow-2xl backdrop-blur-xl"
             >
               {/* macOS window header */}
