@@ -19,6 +19,7 @@ import {
   Target,
 } from "lucide-react";
 import { stagger, viewport } from "@/lib/motion";
+import Story from "./story";
 
 // Change these to your own stack
 const stack = [
@@ -267,6 +268,9 @@ export default function About() {
           </motion.div>
         </Widget>
       </motion.div>
+
+      {/* The four tabs: Journey, What I enjoy, Beyond code, Personality */}
+      <Story />
     </section>
   );
 }
