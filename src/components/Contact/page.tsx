@@ -6,7 +6,7 @@ import { ArrowUp, ArrowUpRight, Check, Copy, Mail, Phone } from "lucide-react";
 import { stagger, viewport } from "@/lib/motion";
 
 // Paste your free key from web3forms.com here
-const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+const ACCESS_KEY = (process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? "").trim();
 
 const email = "ayman1nasir@gmail.com";
 
