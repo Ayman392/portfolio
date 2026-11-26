@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { fadeUp, stagger, viewport } from "@/lib/motion";
 import Image from "next/image";
@@ -8,6 +8,27 @@ import Link from "next/link";
 
 // Add or edit your projects here
 const projects = [
+  {
+    name: "Apex Rentals",
+    slug: "apex-rentals",
+    description:
+      "An equipment rental platform where users can browse featured equipment, sign in with Google or GitHub, and manage rentals, backed by a custom API and image uploads.",
+    tech: [
+      "Next.js",
+      "React",
+      "Tailwind CSS",
+      "Framer Motion",
+      "Stripe",
+      "TypeScript",
+      "MongoDB",
+      "Better Auth",
+      "ImgBB",
+    ],
+    github: "https://github.com/Ayman392/Apex-Rentals",
+    live: "https://apex-rentals.vercel.app", // replace with your real Vercel URL
+    image: "/Assets/apex_rentals.png",
+    gradient: "from-amber-500 to-red-600",
+  },
   {
     name: "Oikyo",
     slug: "oikyo",
@@ -26,7 +47,7 @@ const projects = [
     github:
       "https://github.com/Ayman392/Oikyo-Social-Development-Events-Platform-Client",
     live: "https://oikyo-psi.vercel.app",
-    image: "/Assets/oikyo.png", // set to "" if you don't have a picture yet
+    image: "/Assets/oikyo.png",
     gradient: "from-sky-500 to-indigo-600",
   },
   {
@@ -52,53 +73,13 @@ const projects = [
     name: "Fitlog",
     slug: "fitlog",
     description: "A workout tracking app.",
-    tech: ["Next.js", "TypeScript"], // add more here when you know the full stack
+    tech: ["Next.js", "TypeScript"],
     github: "https://github.com/Ayman392/Fitlog",
     live: "https://fitlog-eosin-kappa.vercel.app",
     image: "/Assets/fitlog.png",
     gradient: "from-orange-500 to-rose-600",
   },
 ];
-
-// Wraps a card so it tilts in 3D toward the mouse
-function TiltCard({ children }: { children: React.ReactNode }) {
-  // Where the mouse is inside the card: -0.5 (left/top) to 0.5 (right/bottom)
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  // Turn the mouse position into a small rotation in degrees
-  const rotateXRaw = useTransform(y, [-0.5, 0.5], [6, -6]);
-  const rotateYRaw = useTransform(x, [-0.5, 0.5], [-6, 6]);
-
-  // The spring makes the tilt smooth and a little bouncy
-  const rotateX = useSpring(rotateXRaw, { stiffness: 200, damping: 20 });
-  const rotateY = useSpring(rotateYRaw, { stiffness: 200, damping: 20 });
-
-  function handleMove(event: React.MouseEvent<HTMLDivElement>) {
-    const box = event.currentTarget.getBoundingClientRect();
-    x.set((event.clientX - box.left) / box.width - 0.5);
-    y.set((event.clientY - box.top) / box.height - 0.5);
-  }
-
-  // Go back to flat when the mouse leaves
-  function handleLeave() {
-    x.set(0);
-    y.set(0);
-  }
-
-  return (
-    <div className="h-full" style={{ perspective: 1000 }}>
-      <motion.div
-        className="h-full"
-        style={{ rotateX, rotateY }}
-        onMouseMove={handleMove}
-        onMouseLeave={handleLeave}
-      >
-        {children}
-      </motion.div>
-    </div>
-  );
-}
 
 export default function Projects() {
   return (
@@ -115,18 +96,20 @@ export default function Projects() {
         viewport={viewport}
         className="mt-12 grid gap-6 md:grid-cols-2"
       >
-        {projects.map((project, index) => (
-          <motion.li
-            key={project.name}
-            variants={fadeUp}
-            className={index === 0 ? "md:col-span-2" : ""}
-          >
-            <TiltCard>
-              <article className="group h-full overflow-hidden rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-xl transition duration-300 hover:-translate-y-1.5 hover:border-white/20">
+        {projects.map((project, index) => {
+          const isFeatured = index === 0;
+
+          return (
+            <motion.li
+              key={project.name}
+              variants={fadeUp}
+              className={isFeatured ? "md:col-span-2" : ""}
+            >
+              <article className="h-full overflow-hidden rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-xl transition duration-300 hover:border-white/20">
                 {/* Banner: the project picture, or a gradient if there is none */}
                 <div
                   className={`relative overflow-hidden bg-gradient-to-br ${project.gradient} ${
-                    index === 0 ? "h-56 md:h-72" : "h-44 md:h-56"
+                    isFeatured ? "h-56 md:h-72" : "h-44 md:h-56"
                   }`}
                 >
                   {project.image ? (
@@ -135,7 +118,7 @@ export default function Projects() {
                       alt={`${project.name} landing page`}
                       fill
                       sizes="(min-width: 1024px) 1024px, 100vw"
-                      className="object-cover object-top transition duration-700 group-hover:scale-105"
+                      className="object-cover object-top"
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center">
@@ -177,7 +160,7 @@ export default function Projects() {
                       View Details <ArrowRight size={14} />
                     </Link>
 
-                    {project.live && (
+                    {project.github && (
                       <a
                         href={project.github}
                         target="_blank"
@@ -190,9 +173,9 @@ export default function Projects() {
                   </div>
                 </div>
               </article>
-            </TiltCard>
-          </motion.li>
-        ))}
+            </motion.li>
+          );
+        })}
       </motion.ul>
     </section>
   );

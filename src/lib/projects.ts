@@ -13,6 +13,35 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "apex-rentals",
+    name: "Apex Rentals",
+    summary:
+      "An equipment rental platform for browsing, booking and managing rental equipment.",
+    image: "/Assets/apex_rentals.png",
+    liveUrl: "https://apex-rentals.vercel.app", // replace with your real Vercel URL
+    githubUrl: "https://github.com/Ayman392/Apex-Rentals",
+    stack: [
+      "Next.js",
+      "React",
+      "Tailwind CSS",
+      "MongoDB",
+      "Better Auth",
+      "ImgBB",
+    ],
+    description:
+      "Apex Rentals is a full-stack equipment rental platform. Users can browse featured equipment, sign in with Google or GitHub, and manage rentals, while a separate Express API handles the data and images are uploaded through ImgBB.",
+    challenges: [
+      "Setting up social login (Google and GitHub) with Better Auth across local and production environments",
+      "Configuring environment variables so the deployed Vercel app could reach the backend API",
+      "Connecting the client to a separate backend API and handling loading and error states",
+    ],
+    improvements: [
+      "Add payment integration for rentals",
+      "Add availability calendars and booking conflict checks",
+      "Add reviews and ratings for equipment",
+    ],
+  },
+  {
     slug: "oikyo",
     name: "Oikyo",
     image: "/Assets/oikyo.png",
